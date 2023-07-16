@@ -68,8 +68,8 @@ function DishDetail() {
 
   useEffect(() => {
     showDish(id).then(setProduct).catch(console.log)
-  }, []);
-  // console.log(product)
+  }, [id]);
+  console.log(product)
 
   return (
     <>

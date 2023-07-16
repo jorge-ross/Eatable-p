@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useFormik, Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { editDish } from '../services/dish-service';
@@ -67,93 +67,91 @@ const URLText = styled.div`
   gap: 5px;
 `;
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  price: Yup.number().required('Price is required'),
-  description: Yup.string().required('Description is required'),
-  category: Yup.string().required('Category is required'),
-  image: Yup.mixed().test('image', 'URL of Image is required', value => {
-    return value && value instanceof File;
-  }),
-});
-
 const DishForm = () => {
   const {id} = useParams();
-  console.log(id);
-  const [product, setProduct] = useState(id)
+  // console.log(id);
+  const [product, setProduct] = useState({ 
+    name: '',
+    price: 0,
+    description: '',
+    category: '',
+    picture_url: '',
+  })
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      price: '',
+      description: '',
+      category: '',
+      picture_url: '',
+    },
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   useEffect(() => {
-    editDish(id).then(setProduct).catch(console.log)
+    editDish(id).then(setProduct).catch()
   }, [id]);
   console.log(product);
-
-  // const initValues = () => {
-  //   const formik = useFormik({
-  //     initialValues: {
-  //       name: '',
-  //       lastName: '',
-  //       email: '',
-  //     },
-  //     onSubmit: values => {
-  //       alert(JSON.stringify(values, null, 2));
-  //     },
-  //   });
+    
+    return (
+      <Formik>
+        <Body>
+          <Form>
+            <Name>
+              <label htmlFor="name">Name</label>
+              <Field type="text" name="name" onChange={formik.handleChange} value={product?.name}
+               style={{ borderBottom: '1px solid black', 
+               borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
+               />
+              <ErrorMessage name="name" component="div" />
+            </Name>
   
-  return (
-    <Formik>
-      <Body>
-        <Form>
-          <Name>
-            <label htmlFor="name">Name</label>
-            <Field type="text" name="name"
-             style={{ borderBottom: '1px solid black', 
-             borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
-             />
-            <ErrorMessage name="name" component="div" />
-          </Name>
-
-          <Price>
-            <label htmlFor="price">Price</label>
-            <Field type="text" id="price" name="price"
-            style={{ borderBottom: '1px solid black', 
-            borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
-             />
-            <ErrorMessage name="price" component="div" />
-          </Price>
-
-          <Description>
-            <label htmlFor="Description">Description</label>
-            <FieldDescription as="textarea" id="description" name="description"
-            style={{ borderBottom: '1px solid black', 
-            borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
-             /> 
-            <ErrorMessage name="description" component="div" />
-          </Description>
-
-          <Category>
-            <label htmlFor="name">Category</label>
-            <Field type="text" id="category" name="category" 
-            style={{ borderBottom: '1px solid black', 
-            borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
-            />
-            <ErrorMessage name="category" component="div" />
-          </Category>
-
-          <URLText>
-            <label htmlFor="picture">Picture URL</label>
-            <FieldURL type="text" id="image" name="image" 
-             style={{ borderBottom: '1px solid black', 
-             borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
-             />
-            <ErrorMessage name="image" component="div" />
-          </URLText>
-
-          <button type="submit">Save</button>
-        </Form>
-      </Body>
-    </Formik>
-  );
+            <Price>
+              <label htmlFor="price">Price</label>
+              <Field type="text" id="price" name="price" onChange={formik.handleChange} value={product?.price}
+              style={{ borderBottom: '1px solid black', 
+              borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
+               />
+              <ErrorMessage name="price" component="div" />
+            </Price>
+  
+            <Description>
+              <label htmlFor="Description">Description</label>
+              <FieldDescription as="textarea" id="description" name="description" onChange={formik.handleChange} value={product?.description}
+              style={{ borderBottom: '1px solid black', 
+              borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
+               /> 
+              <ErrorMessage name="description" component="div" />
+            </Description>
+  
+            <Category>
+              <label htmlFor="category">Category</label>
+              <Field type="text" id="category" name="category" onChange={formik.handleChange} value={product?.category}
+              style={{ borderBottom: '1px solid black', 
+              borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
+              />
+              <ErrorMessage name="category" component="div" />
+            </Category>
+  
+            <URLText>
+              <label htmlFor="picture">Picture URL</label>
+              <FieldURL as="textarea" id="image" name="image" onChange={formik.handleChange} value={product?.picture_url}
+               style={{ borderBottom: '1px solid black', 
+               borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
+               />
+              <ErrorMessage name="image" component="div" />
+            </URLText>
+  
+            <button type="submit">Save</button>
+          </Form>
+        </Body>
+      </Formik>
+    );
 };
+
 
 
 export default DishForm;
