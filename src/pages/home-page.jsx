@@ -3,14 +3,17 @@ import { useState, useEffect } from "react";
 import { typography } from "../styles/typography";
 import DishCard from "../components/dish-card";
 import { getDishes } from "../services/dish-service";
+import { Button } from "../components/button";
 
 const ContainerPage = styled.div`
   margin: 0 auto;
   max-width: 414px;
-  height: 896px;
-  background-color: white;
+  height: 832px;
+  background-color: #F6F6F9;
   border-radius: 20px;
   padding-top: 24px;
+  padding-bottom: 24px;
+  position: relative;
 
   @media (max-width: 414px) {
     max-width: 374px;
@@ -26,8 +29,9 @@ const DishContainer = styled.div`
   grid-template-rows: repeat(5, 1fr);
   place-items: center;
   padding: 46px 20px;
-  height: 694px;
+  height: 594px;
   overflow-y: auto;
+  background-color: white;
 `
 
 const Header = styled.div`
@@ -66,6 +70,7 @@ function HomePage() {
         />    
        ))}
       </DishContainer>
+      <Button>Create Product</Button>
     </ContainerPage>
   )
 }
