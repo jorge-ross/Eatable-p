@@ -5,14 +5,17 @@ import { showDish } from "../services/dish-service";
 import DishCover from "../components/dish-cover";
 import { typography } from "../styles/typography";
 import { Link } from "react-router-dom";
+import { Button } from "../components/button";
 
 const ContainerPage = styled.div`
   margin: 0 auto;
   max-width: 414px;
-  height: 896px;
-  background-color: white;
+  height: 832px;
+  background-color: #F6F6F9;
   border-radius: 20px;
   padding-top: 24px;
+  padding-bottom: 24px;
+  position: relative;
 
   @media (max-width: 414px) {
     max-width: 374px;
@@ -69,7 +72,7 @@ function DishDetail() {
   useEffect(() => {
     showDish(id).then(setProduct).catch(console.log)
   }, [id]);
-  console.log(product)
+  // console.log(product)
 
   return (
     <>
@@ -85,6 +88,7 @@ function DishDetail() {
         <TitleDescription>Description</TitleDescription>
         <Description>{product?.description}</Description>
       </DetailSection>
+      <Button>Go back</Button>
      </ContainerPage>
     </>
   )

@@ -1,15 +1,18 @@
 import styled from "@emotion/styled";
 import { typography } from "../styles/typography";
 import DishForm from "../components/dish-form";
+import { useParams } from "react-router-dom";
 
 
 const ContainerPage = styled.div`
   margin: 0 auto;
   max-width: 414px;
-  height: 896px;
+  height: 832px;
   background-color: white;
   border-radius: 20px;
   padding-top: 24px;
+  padding-bottom: 24px;
+  position: relative;
 
   @media (max-width: 414px) {
     max-width: 374px;
