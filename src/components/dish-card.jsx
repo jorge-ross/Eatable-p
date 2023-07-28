@@ -48,18 +48,18 @@ const ImageContainer = styled.div`
   top: -2.4rem;
 `;
 
-function DishCard({props}) {
+function DishCard(product) {
   // const navigate = useNavigate();
 // navigate("/products")
   return (
   <Container>
-    <Link to={`/products/${props.id}`}>
+    <Link to={`/products/${product.id}`}>
     <ImageContainer>
-     <DishCover size={"sm"} src={props.picture_url} />
+     <DishCover size={"sm"} src={product.picture_url} />
     </ImageContainer>
     </Link>
-    <DishName>{props.name}</DishName>
-    <DishPrice color={"#FA4A0C"}>${props.price}</DishPrice>
+    <DishName>{product.name}</DishName>
+    <DishPrice color={"#FA4A0C"}>${product.price}</DishPrice>
   </Container>
   )
 }

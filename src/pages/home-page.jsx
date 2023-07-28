@@ -58,10 +58,11 @@ function HomePage() {
         </Header>
       </div>
       <DishContainer>
-      {products?.map((dish) => (
+      {products?.map((product) => (
         <DishCard
-          key={dish.id}
-          props={dish}
+          key={product.id}
+          props={product}
+          {...product}
         />    
        ))}
       </DishContainer>

@@ -41,7 +41,9 @@ function InitPage() {
         >
           <img src={logo} alt="logo" style={{width: 200}} />
           <img src={text} alt="text" style={{width: 110, paddingBottom: 16}}/>
-          <Link >Start Here</Link>
+          <Link to="/products">
+          Start Here
+          </Link>
         </div>
     </div>
     </ContainerPage>
