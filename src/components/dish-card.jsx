@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { typography } from "../styles/typography";
 import DishCover from "./dish-cover";
 import { Link } from "react-router-dom";
+import { BiSolidTrash } from 'react-icons/bi';
+import { RiEditBoxFill } from 'react-icons/ri'
 
 const Container = styled.div`
   width: 156px;
@@ -13,6 +15,7 @@ const Container = styled.div`
   align-items: center;
   transition: all 0.5s;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+  position: relative;
 
   &:hover {
     transform: scale(1.05);
@@ -48,6 +51,22 @@ const ImageContainer = styled.div`
   top: -2.4rem;
 `;
 
+const TrashCont = styled.div`
+  position: absolute;
+  bottom: 8px;
+  right: 30px;
+  color: #FA4A0C;
+  font-size: 1rem;
+`
+
+const EditCont = styled.div`
+  position: absolute;
+  bottom: 8px;
+  left: 30px;
+  color: #FA4A0C;
+  font-size: 1rem;
+`
+
 function DishCard(product) {
   // const navigate = useNavigate();
 // navigate("/products")
@@ -60,6 +79,14 @@ function DishCard(product) {
     </Link>
     <DishName>{product.name}</DishName>
     <DishPrice color={"#FA4A0C"}>${product.price}</DishPrice>
+    <TrashCont>
+      <BiSolidTrash />
+    </TrashCont>
+    <Link to={`/products/${product?.id}/edit`}>
+    <EditCont>
+      <RiEditBoxFill />
+    </EditCont>
+    </Link>
   </Container>
   )
 }
