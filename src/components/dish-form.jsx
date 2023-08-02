@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { editDish, showDish } from '../services/dish-service';
 import { typography } from '../styles/typography';
-import { Button } from './button';
+import { Button } from "../components/button";
+
 
 
 const Body = styled.div`
@@ -12,60 +13,40 @@ const Body = styled.div`
   padding: 32px;
 `;
 
-const Name = styled.p`
+const Container = styled.div`
+  ${typography.text.xt} 
   display: flex;
   flex-direction: column;
-  ${typography.text.xt}
-  margin: 0;
   padding-bottom: 16px;
   gap: 5px;
+  
 `;
 
-const Price = styled.div`
-  display: flex;
-  flex-direction: column;
-  ${typography.text.xt}
+const Data = styled.p`
+  ${typography.text.xx}
   margin: 0;
-  padding-bottom: 16px;
-  gap: 5px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
 `;
 
-const Description = styled.div`
-  display: flex;
-  flex-direction: column;
-  ${typography.text.xt}
-  margin: 0;
-  padding-bottom: 16px;
-  gap: 5px;
-`;
-
-const FieldDescription = styled.div`
+const FieldDescription = styled.p`
+  ${typography.text.xx}
   height: 146px;
-  ${typography.text.md}
+  margin: 0;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
 `
 
 const FieldURL = styled.div`
+  ${typography.text.xx}
   height: 55px;
-  ${typography.text.md}
+  margin: 0;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
 `
-
-const Category = styled.div`
-  display: flex;
-  flex-direction: column;
-  ${typography.text.xt}
-  margin: 0;
-  padding-bottom: 16px;
-  gap: 5px;
-`;
-
-const URLText = styled.div`
-  display: flex;
-  flex-direction: column;
-  ${typography.text.xt}
-  margin: 0;
-  padding-bottom: 16px;
-  gap: 5px;
-`;
 
 function DishForm() {
   const {id} = useParams();
@@ -82,19 +63,44 @@ function DishForm() {
   
     return (
         <Body>
-            <Name>
-              <label htmlFor="name">Name</label>
-            </Name>
-            <p>{product?.name}</p>
-            <p>{product?.price}</p>
-           
-
+          <Container>
+            <label htmlFor="name">Name</label>
+            <Data> 
+              {product?.name}
+            </Data>
+          </Container>
+          <Container>
+            <label htmlFor="name">Price</label>
+            <Data> 
+              {product?.price}
+            </Data>
+          </Container>
+          <Container>
+            <label htmlFor="name">Description (Max 150 characters)</label>
+            <FieldDescription> 
+              {product?.description}
+            </FieldDescription>
+          </Container>
+          <Container>
+            <label htmlFor="name">Category</label>
+            <Data> 
+              {product?.category}
+            </Data>
+          </Container>
+          <Container>
+            <label htmlFor="name">Picture URL</label>
+            <FieldURL> 
+              {product?.picture_url}
+            </FieldURL>
+          </Container>
+          <Link to={`/products/${product.id}`}>
             <Button type="submit">
-              Save
-              </Button>
+            Save
+            </Button>
+          </Link>
         </Body>
     );
-};
+}
 
 
 

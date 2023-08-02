@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { typography } from "../styles/typography";
 import DishForm from "../components/dish-form";
-import { useParams } from "react-router-dom";
 
 
 const ContainerPage = styled.div`
@@ -30,8 +29,7 @@ const Header = styled.div`
 `
 
 function DishEdit() {
-  // const {id} = useParams();
-  // console.log(id);
+
 
   return (
     <ContainerPage>

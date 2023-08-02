@@ -34,6 +34,11 @@ export const typography = {
     line-height: normal;
     color: gray;
     `,
+    xx: `
+    font-size: 1.125rem;
+    line-height: normal;
+    color: black;
+    `,
   },
   head: {
     xs: `
