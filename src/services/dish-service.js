@@ -11,9 +11,8 @@ export async function showDish(id) {
 }
 
 export async function editDish(id, newData) {
-  const data = await dishCollection(`/products/${id}`, {
+  return await dishCollection(`/products/${id}`, {
     method: "PATCH",
     body: newData,
   });
-  return data;
 }

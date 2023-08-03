@@ -88,7 +88,9 @@ function DishDetail() {
         <TitleDescription>Description</TitleDescription>
         <Description>{product?.description}</Description>
       </DetailSection>
-      <Button>Go back</Button>
+      <Link to={`/products`}>
+      <Button>Go Back</Button>
+      </Link>
      </ContainerPage>
     </>
   )

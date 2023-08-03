@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 import { typography } from "../styles/typography";
-import DishForm from "../components/dish-form";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { editDish, showDish } from '../services/dish-service';
+import { Button } from "../components/button";
 
 
 const ContainerPage = styled.div`
@@ -28,15 +31,157 @@ const Header = styled.div`
   ${typography.text.xl}
 `
 
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+`;
+
+const Container = styled.div`
+  ${typography.text.xt} 
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 16px;
+  gap: 5px;
+`;
+
+const Data = styled.input`
+  ${typography.text.xx}
+  margin: 0;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border: none;
+  border-bottom: 1px solid black;
+`;
+
+const FieldDescription = styled.textarea`
+  ${typography.text.xx}
+  height: 154px;
+  margin: 0;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border: none;
+  border-bottom: 1px solid black;
+`
+
+const FieldURL = styled.textarea`
+  ${typography.text.xx}
+  height: 75px;
+  width: 100%
+  margin: 0;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border: none;
+  border-bottom: 1px solid black;
+  overflow: hidden;
+  white-space: pre-wrap;
+`
+
 function DishEdit() {
 
+  const {id} = useParams();
+  // console.log(id);
+
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    picture_url: "",
+  });
+
+  useEffect(() => {
+    showDish(id).then((data) => {
+      setProduct(data);
+    }).catch();
+  }, [id]);
+
+  function handleChange(event) {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setProduct({ ...product, [name]: value });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newData = {
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      category: product.category,
+      picture_url: product.picture_url,
+    };
+
+    editDish(id, newData);
+      console.log("Dish updated ");
+  };
 
   return (
     <ContainerPage>
       <Header>
         Edit Dish
       </Header>
-      <DishForm/>
+      <Body>
+          <Container>
+            <label htmlFor="name">Name</label>
+            <Data
+            type="text" 
+            id="name" 
+            name={"name"}
+            value={product.name} 
+            onChange={handleChange}
+            />
+          </Container>
+          <Container>
+            <label htmlFor="name">Price</label>
+            <Data
+            type="integer" 
+            id="price" 
+            name="price" 
+            value={product.price} 
+            onChange={handleChange}
+            />
+          </Container>
+          <Container>
+            <label htmlFor="name">Description (Max 150 characters)</label>
+
+            <FieldDescription
+              type="text"
+              id="description"
+              name="description"
+              value={product.description}
+              onChange={handleChange}
+            /> 
+
+          </Container>
+          <Container>
+            <label htmlFor="name">Category</label>
+            <Data 
+              type="text"
+              id="category"
+              name="category"
+              value={product.category}
+              onChange={handleChange}
+            />
+          </Container>
+          <Container>
+            <label htmlFor="name">Picture URL</label>
+            <FieldURL
+            type="text"
+            id="picture_url"
+            name="picture_url"
+            value={product.picture_url}
+            onChange={handleChange}              
+            />
+          </Container>
+          <form onClick={handleSubmit}>
+          <Link to={`/products/${product?.id}`}>
+          <Button type="submit">
+            Save
+          </Button>
+           </Link>
+           </form>
+        </Body>
     </ContainerPage>
   )
 }
