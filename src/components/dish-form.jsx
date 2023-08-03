@@ -30,10 +30,9 @@ const Data = styled.input`
   border-bottom: 1px solid black;
 `;
 
-const FieldDescription = styled.input`
+const FieldDescription = styled.textarea`
   ${typography.text.xx}
-  height: 146px;
-  width: 350px;
+  height: 154px;
   margin: 0;
   font-weight: 400;
   padding-bottom: 5px;
@@ -41,9 +40,9 @@ const FieldDescription = styled.input`
   border-bottom: 1px solid black;
 `
 
-const FieldURL = styled.input`
+const FieldURL = styled.textarea`
   ${typography.text.xx}
-  height: 65px;
+  height: 75px;
   width: 100%
   margin: 0;
   font-weight: 400;
@@ -57,51 +56,30 @@ const FieldURL = styled.input`
 function DishForm() {
   const {id} = useParams();
   // console.log(id);
-
   const [product, setProduct] = useState({})
 
   useEffect(() => {
     showDish(id).then(setProduct).catch()
   }, [id]);
-  
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [picture_url, setPicture_url] = useState("");
+
+  const [element, setElement] = useState({
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    picture_url: "",
+  });
+
+  const { name, price, description, category, picture_url } = element;
 
   useEffect(() => {
-    showDish(id).then(product => {
-      setName(product.name);
-      setPrice(product.price);
-      setDescription(product.description);
-      setCategory(product.category);
-      setPicture_url(product.picture_url);
-    }).catch(console.log)
-  }, [id]);
+    showDish(id).then(setElement).catch(console.log)
+  }, [id])
 
-  const handleChange = (event) => {
-    const {name, value} = event.target;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-      case "price":
-        setPrice(value);
-        break;
-      case "description":
-        setDescription(value);
-        break;
-      case "category":
-        setCategory(value);
-        break;
-      case "picture_url":
-        setPicture_url(value);
-        break;
-      default:
-        break;
-    }
-  };
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setElement({ ...element, [name]: value })
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -144,6 +122,7 @@ function DishForm() {
           </Container>
           <Container>
             <label htmlFor="name">Description (Max 150 characters)</label>
+
             <FieldDescription
               type="text"
               id="description"
@@ -151,7 +130,7 @@ function DishForm() {
               value={description}
               onChange={handleChange}
             /> 
-              
+
           </Container>
           <Container>
             <label htmlFor="name">Category</label>
