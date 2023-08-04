@@ -16,3 +16,8 @@ export async function editDish(id, newData) {
     body: newData,
   });
 }
+
+export async function newDish(newProduct) {
+  const data = await dishCollection("/products", { body: newProduct });
+  return data;
+}

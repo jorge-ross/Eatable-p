@@ -4,6 +4,7 @@ import { typography } from "../styles/typography";
 import DishCard from "../components/dish-card";
 import { getDishes } from "../services/dish-service";
 import { Button } from "../components/button";
+import { Link } from "react-router-dom";
 
 const ContainerPage = styled.div`
   margin: 0 auto;
@@ -70,7 +71,9 @@ function HomePage() {
         />    
        ))}
       </DishContainer>
+      <Link to={`/products/new`}>
       <Button>Create Product</Button>
+      </Link>
     </ContainerPage>
   )
 }

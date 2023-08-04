@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import { typography } from "../styles/typography";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from 'react';
-import { editDish, showDish } from '../services/dish-service';
+import { Link } from "react-router-dom";
+import { newDish } from '../services/dish-service';
 import { Button } from "../components/button";
 
 
@@ -77,49 +76,28 @@ const FieldURL = styled.textarea`
   white-space: pre-wrap;
 `
 
-function DishEdit() {
+function NewDish() {
 
-  const {id} = useParams();
-  // console.log(id);
-
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    description: "",
-    category: "",
-    picture_url: "",
-  });
-
-  useEffect(() => {
-    showDish(id).then((data) => {
-      setProduct(data);
-    }).catch();
-  }, [id]);
-
-  function handleChange(event) {
+  function handleSubmit(event) {
     event.preventDefault();
-    const { name, value } = event.target;
-    setProduct({ ...product, [name]: value });
-  }
+    const { name, price, category, description, picture_url } = event.target.elements;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newData = {
-      name: product.name,
-      price: product.price,
-      description: product.description,
-      category: product.category,
-      picture_url: product.picture_url,
+    const dishData = {
+    name: name.value,
+    price: price.value,
+    description: description.value,
+    category: category.value,
+    picture_url: picture_url.value,
     };
 
-    editDish(id, newData);
-      console.log("Dish updated ");
-  };
+    newDish(dishData);
+      console.log("Dish created ");
+  }
 
   return (
     <ContainerPage>
       <Header>
-        Edit Dish
+        Create Dish
       </Header>
       <Body>
           <Container>
@@ -128,8 +106,6 @@ function DishEdit() {
             type="text" 
             id="name" 
             name="name"
-            value={product.name} 
-            onChange={handleChange}
             />
           </Container>
           <Container>
@@ -137,22 +113,16 @@ function DishEdit() {
             <Data
             type="integer" 
             id="price" 
-            name="price" 
-            value={product.price} 
-            onChange={handleChange}
+            name="price"
             />
           </Container>
           <Container>
             <label htmlFor="name">Description (Max 150 characters)</label>
-
             <FieldDescription
               type="text"
               id="description"
               name="description"
-              value={product.description}
-              onChange={handleChange}
             /> 
-
           </Container>
           <Container>
             <label htmlFor="name">Category</label>
@@ -160,8 +130,6 @@ function DishEdit() {
               type="text"
               id="category"
               name="category"
-              value={product.category}
-              onChange={handleChange}
             />
           </Container>
           <Container>
@@ -169,13 +137,11 @@ function DishEdit() {
             <FieldURL
             type="text"
             id="picture_url"
-            name="picture_url"
-            value={product.picture_url}
-            onChange={handleChange}              
+            name="picture_url"      
             />
           </Container>
           <form onClick={handleSubmit}>
-          <Link to={`/products/${product?.id}`}>
+          <Link to={`/products`}>
           <Button type="submit">
             Save
           </Button>
@@ -186,4 +152,4 @@ function DishEdit() {
   )
 }
 
-export default DishEdit;
+export default NewDish;
