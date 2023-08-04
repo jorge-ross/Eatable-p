@@ -3,7 +3,7 @@ import { typography } from "../styles/typography";
 import { Link } from "react-router-dom";
 import { newDish } from '../services/dish-service';
 import { Button } from "../components/button";
-
+import { useState } from "react";
 
 const ContainerPage = styled.div`
   margin: 0 auto;
@@ -76,23 +76,35 @@ const FieldURL = styled.textarea`
   white-space: pre-wrap;
 `
 
-function NewDish() {
+const NewDish = () => {
 
-  function handleSubmit(event) {
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    picture_url: "",
+  });
+
+  function handleChange(event) {
     event.preventDefault();
-    const { name, price, category, description, picture_url } = event.target.elements;
+    const { name, value } = event.target;
+    setProduct({ ...product, [name]: value });
+  }
 
-    const dishData = {
-    name: name.value,
-    price: price.value,
-    description: description.value,
-    category: category.value,
-    picture_url: picture_url.value,
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newProduct = {
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      category: product.category,
+      picture_url: product.picture_url,
     };
 
-    newDish(dishData);
-      console.log("Dish created ");
-  }
+    newDish(newProduct);
+      console.log("Dish created");
+  };
 
   return (
     <ContainerPage>
@@ -106,48 +118,63 @@ function NewDish() {
             type="text" 
             id="name" 
             name="name"
+            onChange={handleChange}
+            value={product.name}
             />
           </Container>
+
           <Container>
             <label htmlFor="name">Price</label>
             <Data
             type="integer" 
             id="price" 
             name="price"
+            onChange={handleChange}
+            value={product.price}
             />
           </Container>
+
           <Container>
             <label htmlFor="name">Description (Max 150 characters)</label>
             <FieldDescription
               type="text"
               id="description"
               name="description"
+              onChange={handleChange}
+              value={product.description}
             /> 
           </Container>
+
           <Container>
             <label htmlFor="name">Category</label>
             <Data 
               type="text"
               id="category"
               name="category"
+              onChange={handleChange}
+              value={product.category}
             />
           </Container>
+
           <Container>
             <label htmlFor="name">Picture URL</label>
             <FieldURL
             type="text"
             id="picture_url"
-            name="picture_url"      
+            name="picture_url"
+            onChange={handleChange}
+            value={product.picture_url}
             />
           </Container>
-          <form onClick={handleSubmit}>
+
+        <form onClick={handleSubmit}>
           <Link to={`/products`}>
           <Button type="submit">
             Save
           </Button>
            </Link>
-           </form>
-        </Body>
+        </form>
+      </Body>
     </ContainerPage>
   )
 }
