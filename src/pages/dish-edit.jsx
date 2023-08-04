@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { typography } from "../styles/typography";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { editDish, showDish } from '../services/dish-service';
 import { Button } from "../components/button";
@@ -90,6 +90,8 @@ function DishEdit() {
     picture_url: "",
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     showDish(id).then((data) => {
       setProduct(data);
@@ -102,7 +104,7 @@ function DishEdit() {
     setProduct({ ...product, [name]: value });
   }
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     const newData = {
       name: product.name,
@@ -112,9 +114,11 @@ function DishEdit() {
       picture_url: product.picture_url,
     };
 
-    editDish(id, newData);
-      console.log("Dish updated ");
-  };
+    await editDish(id, newData);
+      console.log("Dish updated");
+
+      navigate(`/products/${product?.id}`)
+  }
 
   return (
     <ContainerPage>
@@ -174,13 +178,11 @@ function DishEdit() {
             onChange={handleChange}              
             />
           </Container>
-          <form onClick={handleSubmit}>
-          <Link to={`/products/${product?.id}`}>
-          <Button type="submit">
+     
+          <Button onClick={handleSubmit}>
             Save
           </Button>
-           </Link>
-           </form>
+
         </Body>
     </ContainerPage>
   )

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { typography } from "../styles/typography";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { newDish } from '../services/dish-service';
 import { Button } from "../components/button";
 import { useState } from "react";
@@ -86,13 +86,15 @@ const NewDish = () => {
     picture_url: "",
   });
 
+  const navigate = useNavigate();
+
   function handleChange(event) {
     event.preventDefault();
     const { name, value } = event.target;
     setProduct({ ...product, [name]: value });
   }
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     const newProduct = {
       name: product.name,
@@ -102,9 +104,11 @@ const NewDish = () => {
       picture_url: product.picture_url,
     };
 
-    newDish(newProduct);
+    await newDish(newProduct);
       console.log("Dish created");
-  };
+
+      navigate('/products');
+  }
 
   return (
     <ContainerPage>
@@ -166,14 +170,10 @@ const NewDish = () => {
             value={product.picture_url}
             />
           </Container>
-
-        <form onClick={handleSubmit}>
-          <Link to={`/products`}>
-          <Button type="submit">
+          
+          <Button onClick={handleSubmit}>
             Save
           </Button>
-           </Link>
-        </form>
       </Body>
     </ContainerPage>
   )

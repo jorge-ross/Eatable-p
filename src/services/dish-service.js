@@ -18,6 +18,8 @@ export async function editDish(id, newData) {
 }
 
 export async function newDish(newProduct) {
-  const data = await dishCollection("/products", { body: newProduct });
-  return data;
+  return await dishCollection("/products", {
+    method: "POST",
+    body: newProduct,
+  });
 }
