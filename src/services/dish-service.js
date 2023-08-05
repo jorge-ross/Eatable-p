@@ -23,3 +23,9 @@ export async function newDish(newProduct) {
     body: newProduct,
   });
 }
+
+export async function deleteDish(id) {
+  return await dishCollection(`/products/${id}`, {
+    method: "DELETE",
+  });
+}

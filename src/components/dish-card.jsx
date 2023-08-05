@@ -57,6 +57,7 @@ const TrashCont = styled.div`
   right: 30px;
   color: #FA4A0C;
   font-size: 1rem;
+  cursor: pointer;
 `
 
 const EditCont = styled.div`
@@ -67,9 +68,8 @@ const EditCont = styled.div`
   font-size: 1rem;
 `
 
-function DishCard(product) {
-  // const navigate = useNavigate();
-// navigate("/products")
+function DishCard(product, onDeleteClick) {
+
   return (
   <Container>
     <Link to={`/products/${product.id}`}>
@@ -79,7 +79,7 @@ function DishCard(product) {
     </Link>
     <DishName>{product.name}</DishName>
     <DishPrice color={"#FA4A0C"}>${product.price}</DishPrice>
-    <TrashCont>
+    <TrashCont onClick={onDeleteClick}>
       <BiSolidTrash />
     </TrashCont>
     <Link to={`/products/${product?.id}/edit`}>

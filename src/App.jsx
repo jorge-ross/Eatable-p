@@ -4,6 +4,7 @@ import DishDetail from "./pages/dish-detail"
 import { Routes, Route, Navigate } from "react-router-dom";
 import DishEdit from "./pages/dish-edit";
 import NewDish from "./pages/dish-create";
+import DeleteDish from "./pages/delete-page";
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
           <Route path="products/:id" element={<DishDetail />}/>
           <Route path="products/:id/edit" element={<DishEdit />}/>
           <Route path="products/new" element={<NewDish />}/>
-          <Route />
+          <Route path="delete-page" element={<DeleteDish />}/>
           <Route path= "*" element={<Navigate to="/welcome" replace={true}/>}/> 
         </Route>
       </Routes>
