@@ -6,7 +6,6 @@ import { getDishes, deleteDish } from "../services/dish-service";
 import { Button } from "../components/button";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteDish from "./delete-page";
-import { createPortal } from "react-dom";
 
 const ContainerPage = styled.div`
   margin: 0 auto;
@@ -54,11 +53,11 @@ const Modal = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
-  background-color: rgb(23 23 23 / 75%);
+  background-color: rgb(23 23 23 / 80%);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 880px;
 `
 
 function HomePage() {
@@ -73,12 +72,12 @@ function HomePage() {
     getDishes().then(setProducts).catch(console.log)
   }, []);
 
-  function handleCloseModal(event) {
-    event.preventDefault();
+  function handleCloseModal() {
     setOpenModal(false);
   }
 
   function handleOpenModal(id) {
+    console.log("portal opened");
     setOpenModal(true);
     setProductDelete(id);
   }
@@ -100,26 +99,23 @@ function HomePage() {
       <DishContainer>
       {products?.map((product) => (
         <DishCard
-          onClick={() => handleOpenModal(product.id)}
+          onOpenModal={() => handleOpenModal(product.id)}
           key={product.id}
-          props={product}
-          {...product}
+          product={product}
+          // {...product}
         />
       ))}
       </DishContainer>
       <Link to={`/products/new`}>
       <Button>Create Product</Button>
       </Link>
-      {openModal
-      ? createPortal(
+      {openModal ? (
         <Modal>
           <DeleteDish 
           onDeleteClick={handleDeleteDish}
           onCancelClick={handleCloseModal}
-          >
-          </DeleteDish>
-        </Modal>,
-        document.getElementById("modal-root")
+          />
+        </Modal>
       )
     : null}
     </ContainerPage>

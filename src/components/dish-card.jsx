@@ -3,7 +3,8 @@ import { typography } from "../styles/typography";
 import DishCover from "./dish-cover";
 import { Link } from "react-router-dom";
 import { BiSolidTrash } from 'react-icons/bi';
-import { RiEditBoxFill } from 'react-icons/ri'
+import { RiEditBoxFill } from 'react-icons/ri';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   width: 156px;
@@ -68,7 +69,16 @@ const EditCont = styled.div`
   font-size: 1rem;
 `
 
-function DishCard(product, onDeleteClick) {
+function DishCard({product, onOpenModal}) {
+
+  DishCard.propTypes = {
+    product: PropTypes.object.isRequired,
+    onOpenModal: PropTypes.func.isRequired,
+  };
+  
+  const handleDeleteClick = () => {
+    onOpenModal(product.id);
+  };
 
   return (
   <Container>
@@ -79,7 +89,7 @@ function DishCard(product, onDeleteClick) {
     </Link>
     <DishName>{product.name}</DishName>
     <DishPrice color={"#FA4A0C"}>${product.price}</DishPrice>
-    <TrashCont onClick={onDeleteClick}>
+    <TrashCont onClick={handleDeleteClick}>
       <BiSolidTrash />
     </TrashCont>
     <Link to={`/products/${product?.id}/edit`}>
