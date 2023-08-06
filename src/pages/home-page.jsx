@@ -83,10 +83,16 @@ function HomePage() {
   }
 
   function handleDeleteDish() {
-    deleteDish(productDelete);
-    setOpenModal(false);
-    navigate("/products");
-  }
+    deleteDish(productDelete)
+    .then(() => {
+      setProducts(products.filter((product) => product.id !== productDelete));
+    })
+    .catch(console.log)
+    .finally(() => {
+      setOpenModal(false);
+      navigate('/products');
+    });
+}
 
 
   return (
