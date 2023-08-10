@@ -76,9 +76,23 @@ const FieldURL = styled.textarea`
   white-space: pre-wrap;
 `
 
+const ErrorMessage = styled.p`
+  ${typography.text.xs}
+  color: red;
+  margin: 0;
+`
+
 const NewDish = () => {
 
   const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    picture_url: "",
+  });
+
+  const [errors, setErrors] = useState({
     name: "",
     price: "",
     description: "",
@@ -92,10 +106,29 @@ const NewDish = () => {
     event.preventDefault();
     const { name, value } = event.target;
     setProduct({ ...product, [name]: value });
+
+    if (value === "") {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: "This field is required." }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    }
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const formValid = Object.values(product).every((value) => value !== "");
+    if (!formValid) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        ...Object.fromEntries(
+          Object.entries(product).map(([key, value]) => [
+            key,
+            value === "" ? "This field is required." : "",
+          ])
+        ),
+      }));
+    return;
+  }
     const newProduct = {
       name: product.name,
       price: product.price,
@@ -125,6 +158,7 @@ const NewDish = () => {
             onChange={handleChange}
             value={product.name}
             />
+            {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
           </Container>
 
           <Container>
@@ -136,6 +170,7 @@ const NewDish = () => {
             onChange={handleChange}
             value={product.price}
             />
+            {errors.price && <ErrorMessage>{errors.price}</ErrorMessage>}
           </Container>
 
           <Container>
@@ -147,6 +182,7 @@ const NewDish = () => {
               onChange={handleChange}
               value={product.description}
             /> 
+            {errors.description && <ErrorMessage>{errors.description}</ErrorMessage>}
           </Container>
 
           <Container>
@@ -158,6 +194,7 @@ const NewDish = () => {
               onChange={handleChange}
               value={product.category}
             />
+            {errors.category && <ErrorMessage>{errors.category}</ErrorMessage>}
           </Container>
 
           <Container>
@@ -169,6 +206,7 @@ const NewDish = () => {
             onChange={handleChange}
             value={product.picture_url}
             />
+            {errors.picture_url && <ErrorMessage>{errors.picture_url}</ErrorMessage>}
           </Container>
           
           <Button onClick={handleSubmit}>
