@@ -77,12 +77,26 @@ const FieldURL = styled.textarea`
   white-space: pre-wrap;
 `
 
+const ErrorMessage = styled.p`
+  ${typography.text.xs}
+  color: red;
+  margin: 0;
+`
+
 function DishEdit() {
 
   const {id} = useParams();
   // console.log(id);
 
   const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    picture_url: "",
+  });
+
+    const [errors, setErrors] = useState({
     name: "",
     price: "",
     description: "",
@@ -102,10 +116,29 @@ function DishEdit() {
     event.preventDefault();
     const { name, value } = event.target;
     setProduct({ ...product, [name]: value });
+
+     if (value === "") {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: "This field is required." }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    }
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const formValid = Object.values(product).every((value) => value !== "");
+    if (!formValid) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        ...Object.fromEntries(
+          Object.entries(product).map(([key, value]) => [
+            key,
+            value === "" ? "This field is required." : "",
+          ])
+        ),
+      }));
+    return;
+  }
     const newData = {
       name: product.name,
       price: product.price,
@@ -135,6 +168,7 @@ function DishEdit() {
             value={product.name} 
             onChange={handleChange}
             />
+            {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
           </Container>
           <Container>
             <label htmlFor="name">Price</label>
@@ -145,10 +179,10 @@ function DishEdit() {
             value={product.price} 
             onChange={handleChange}
             />
+            {errors.price && <ErrorMessage>{errors.price}</ErrorMessage>}
           </Container>
           <Container>
             <label htmlFor="name">Description (Max 150 characters)</label>
-
             <FieldDescription
               type="text"
               id="description"
@@ -156,7 +190,7 @@ function DishEdit() {
               value={product.description}
               onChange={handleChange}
             /> 
-
+            {errors.description && <ErrorMessage>{errors.description}</ErrorMessage>}
           </Container>
           <Container>
             <label htmlFor="name">Category</label>
@@ -167,6 +201,7 @@ function DishEdit() {
               value={product.category}
               onChange={handleChange}
             />
+            {errors.category && <ErrorMessage>{errors.category}</ErrorMessage>}
           </Container>
           <Container>
             <label htmlFor="name">Picture URL</label>
@@ -177,6 +212,7 @@ function DishEdit() {
             value={product.picture_url}
             onChange={handleChange}              
             />
+            {errors.picture_url && <ErrorMessage>{errors.picture_url}</ErrorMessage>}
           </Container>
      
           <Button onClick={handleSubmit}>
